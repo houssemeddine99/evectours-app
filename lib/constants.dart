@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 /// API + site
 const String kApiBase = 'https://evectours.com/api/v1';
 const String kSiteUrl = 'https://evectours.com';
+const String kAdminWebBase = 'https://evectours.com/admin';
 
 /// Agency contact
 const String kPhone = '+21698365730';
@@ -10,21 +11,27 @@ const String kWhatsApp = '21698365730';
 const String kEmail = 'contact@evectours.com';
 const String kMapsQuery = '36.094556,9.570250';
 
-/// ── "Vibrant Ocean" palette ──────────────────────────────
-const Color kTeal = Color(0xFF0D9488); // primary
-const Color kTealDark = Color(0xFF0F766E);
-const Color kTealSoft = Color(0xFF99F6E4); // light teal (on dark / tints)
-const Color kCoral = Color(0xFFFB7185); // offers / discounts accent
-const Color kBg = Color(0xFFF6FAFB); // scaffold background
-const Color kSurface = Color(0xFFFFFFFF); // cards
-const Color kInk = Color(0xFF0F172A); // headings
-const Color kMuted = Color(0xFF64748B); // secondary text
-const Color kLine = Color(0xFFE6EDEF); // hairline borders
+/// ── Brand palette (from the Evec Tours logo: blue + colourful swoosh) ──
+const Color kBlue = Color(0xFF0078D8); // primary (logo blue)
+const Color kBlueDark = Color(0xFF005CB8);
+const Color kBlueSoft = Color(0xFFBFE3FB);
+const Color kGreen = Color(0xFF16A34A); // swoosh green
+const Color kAmber = Color(0xFFF5A623); // swoosh yellow/orange
+const Color kOrange = Color(0xFFF0792B);
+const Color kCoral = Color(0xFFFB7185);
+const Color kBg = Color(0xFFF4F7FB); // scaffold
+const Color kSurface = Color(0xFFFFFFFF);
+const Color kInk = Color(0xFF0F172A);
+const Color kMuted = Color(0xFF64748B);
+const Color kLine = Color(0xFFE4EAF1);
 
-/// Back-compat aliases so existing screens keep compiling, remapped to the new palette.
-const Color kGold = kTeal;
-const Color kGoldDark = kTealDark;
-const Color kGoldSoft = kTealSoft;
+/// Aliases used across screens — remapped to the brand-blue palette.
+const Color kTeal = kBlue;
+const Color kTealDark = kBlueDark;
+const Color kTealSoft = kBlueSoft;
+const Color kGold = kBlue;
+const Color kGoldDark = kBlueDark;
+const Color kGoldSoft = kBlueSoft;
 const Color kIvory = kBg;
 const Color kHairline = kLine;
-const Color kEvecBlue = kTeal;
+const Color kEvecBlue = kBlue;

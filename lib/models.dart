@@ -1,6 +1,7 @@
 // Data models for the Evec Tours API.
 
 class Voyage {
+  final int? id;
   final String slug;
   final String title;
   final String destination;
@@ -19,6 +20,7 @@ class Voyage {
   final Offer? offer;
 
   Voyage({
+    this.id,
     required this.slug,
     required this.title,
     required this.destination,
@@ -36,6 +38,7 @@ class Voyage {
   });
 
   factory Voyage.fromList(Map<String, dynamic> j) => Voyage(
+        id: j['id'] is int ? j['id'] : int.tryParse('${j['id'] ?? ''}'),
         slug: j['slug'] ?? '',
         title: j['title'] ?? '',
         destination: j['destination'] ?? '',
@@ -179,12 +182,14 @@ class AdminStats {
   final int paid;
   final int pending;
   final num revenue;
+  final int users;
   AdminStats({
     this.voyages = 0,
     this.reservations = 0,
     this.paid = 0,
     this.pending = 0,
     this.revenue = 0,
+    this.users = 0,
   });
   factory AdminStats.fromJson(Map<String, dynamic> j) => AdminStats(
         voyages: j['voyages'] ?? 0,
@@ -192,6 +197,7 @@ class AdminStats {
         paid: j['paid'] ?? 0,
         pending: j['pending'] ?? 0,
         revenue: j['revenue'] ?? 0,
+        users: j['users'] ?? 0,
       );
 }
 

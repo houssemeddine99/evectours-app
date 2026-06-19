@@ -128,6 +128,31 @@ class Api {
     if (res.statusCode != 200) throw ApiException('Action failed.');
   }
 
+  static Future<List<Voyage>> adminVoyages(String token) async {
+    final res = await http
+        .get(Uri.parse('$kApiBase/admin/voyages'), headers: _auth(token))
+        .timeout(_timeout);
+    if (res.statusCode != 200) throw ApiException('Could not load voyages.');
+    final list = (_decode(res.body)['voyages'] as List?) ?? const [];
+    return list.map((e) => Voyage.fromList(e as Map<String, dynamic>)).toList();
+  }
+
+  static Future<void> adminDeleteVoyage(String token, int id) async {
+    final res = await http
+        .delete(Uri.parse('$kApiBase/admin/voyages/$id'), headers: _auth(token))
+        .timeout(_timeout);
+    if (res.statusCode != 200) throw ApiException('Delete failed.');
+  }
+
+  static Future<List<AppUser>> adminUsers(String token) async {
+    final res = await http
+        .get(Uri.parse('$kApiBase/admin/users'), headers: _auth(token))
+        .timeout(_timeout);
+    if (res.statusCode != 200) throw ApiException('Could not load users.');
+    final list = (_decode(res.body)['users'] as List?) ?? const [];
+    return list.map((e) => AppUser.fromJson(e as Map<String, dynamic>)).toList();
+  }
+
   static Map<String, dynamic> _decode(String body) {
     try {
       final j = jsonDecode(body);
