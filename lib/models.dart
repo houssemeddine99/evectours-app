@@ -173,6 +173,65 @@ class Booking {
       );
 }
 
+class AdminStats {
+  final int voyages;
+  final int reservations;
+  final int paid;
+  final int pending;
+  final num revenue;
+  AdminStats({
+    this.voyages = 0,
+    this.reservations = 0,
+    this.paid = 0,
+    this.pending = 0,
+    this.revenue = 0,
+  });
+  factory AdminStats.fromJson(Map<String, dynamic> j) => AdminStats(
+        voyages: j['voyages'] ?? 0,
+        reservations: j['reservations'] ?? 0,
+        paid: j['paid'] ?? 0,
+        pending: j['pending'] ?? 0,
+        revenue: j['revenue'] ?? 0,
+      );
+}
+
+class AdminReservation {
+  final int? id;
+  final String? voyageTitle;
+  final String? destination;
+  final String? customer;
+  final String? email;
+  final int? people;
+  final String? totalPrice;
+  final String? status;
+  final String? paymentStatus;
+  final String? date;
+  AdminReservation({
+    this.id,
+    this.voyageTitle,
+    this.destination,
+    this.customer,
+    this.email,
+    this.people,
+    this.totalPrice,
+    this.status,
+    this.paymentStatus,
+    this.date,
+  });
+  factory AdminReservation.fromJson(Map<String, dynamic> j) => AdminReservation(
+        id: j['id'] is int ? j['id'] : int.tryParse('${j['id'] ?? ''}'),
+        voyageTitle: j['voyage_title'],
+        destination: j['destination'],
+        customer: j['customer'],
+        email: j['email'],
+        people: j['people'] is int ? j['people'] : int.tryParse('${j['people'] ?? ''}'),
+        totalPrice: j['total_price']?.toString(),
+        status: j['status'],
+        paymentStatus: j['payment_status'],
+        date: j['date'],
+      );
+}
+
 class Offer {
   final String title;
   final String description;

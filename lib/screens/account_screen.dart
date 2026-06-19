@@ -5,6 +5,7 @@ import '../auth_store.dart';
 import '../constants.dart';
 import '../models.dart';
 import '../widgets.dart';
+import 'admin_screen.dart';
 import 'login_screen.dart';
 import 'register_screen.dart';
 
@@ -133,6 +134,37 @@ class _LoggedInState extends State<_LoggedIn> {
               ]),
             ),
           ]),
+          if (u.isAdmin) ...[
+            const SizedBox(height: 22),
+            InkWell(
+              borderRadius: BorderRadius.circular(18),
+              onTap: () => Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => const AdminScreen())),
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                      colors: [kTeal, kTealDark],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight),
+                  borderRadius: BorderRadius.circular(18),
+                ),
+                child: Row(children: [
+                  const Icon(Icons.dashboard_rounded, color: Colors.white),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      Text('Admin dashboard',
+                          style: poppins(size: 15, weight: FontWeight.w800, color: Colors.white)),
+                      Text('Stats & manage bookings',
+                          style: TextStyle(color: Colors.white.withValues(alpha: .85), fontSize: 12.5)),
+                    ]),
+                  ),
+                  const Icon(Icons.chevron_right, color: Colors.white),
+                ]),
+              ),
+            ),
+          ],
           const SizedBox(height: 26),
           Text('My bookings', style: poppins(size: 16, weight: FontWeight.w700)),
           const SizedBox(height: 10),

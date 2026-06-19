@@ -47,11 +47,15 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             _header(),
             _searchBar(),
+            const SizedBox(height: 16),
+            _categories(),
             const SizedBox(height: 18),
             _promoBanner(),
             const SizedBox(height: 24),
             _sectionHeader('Featured voyages', () => widget.onTab(1)),
             _featuredList(),
+            const SizedBox(height: 26),
+            _whyUs(),
           ],
         ),
       ),
@@ -104,6 +108,88 @@ class _HomeScreenState extends State<HomeScreen> {
           ]),
         ),
       ),
+    );
+  }
+
+  Widget _categories() {
+    const cats = [
+      ['🕋', 'Umrah'],
+      ['🏖️', 'Beach'],
+      ['🏙️', 'City'],
+      ['⛰️', 'Adventure'],
+      ['🚢', 'Cruise'],
+    ];
+    return SizedBox(
+      height: 40,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        itemCount: cats.length,
+        separatorBuilder: (_, _) => const SizedBox(width: 10),
+        itemBuilder: (_, i) => GestureDetector(
+          onTap: () => widget.onTab(1),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+            decoration: BoxDecoration(
+                color: kSurface,
+                borderRadius: BorderRadius.circular(30),
+                border: Border.all(color: kLine)),
+            child: Row(children: [
+              Text(cats[i][0]),
+              const SizedBox(width: 6),
+              Text(cats[i][1],
+                  style: const TextStyle(fontWeight: FontWeight.w600, color: kInk, fontSize: 13)),
+            ]),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _whyUs() {
+    const items = [
+      [Icons.verified_user, 'Secure payments'],
+      [Icons.local_offer, 'Best price guarantee'],
+      [Icons.map, 'Expert local guides'],
+      [Icons.chat, '24/7 WhatsApp support'],
+    ];
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Text('Why Evec Tours', style: poppins(size: 18, weight: FontWeight.w800)),
+        const SizedBox(height: 12),
+        GridView.count(
+          crossAxisCount: 2,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          mainAxisSpacing: 12,
+          crossAxisSpacing: 12,
+          childAspectRatio: 2.6,
+          children: items.map((it) {
+            return Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                  color: kSurface,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: kLine)),
+              child: Row(children: [
+                Container(
+                  width: 34,
+                  height: 34,
+                  decoration: BoxDecoration(
+                      color: kTeal.withValues(alpha: .12), borderRadius: BorderRadius.circular(10)),
+                  child: Icon(it[0] as IconData, color: kTeal, size: 18),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(it[1] as String,
+                      style: const TextStyle(fontWeight: FontWeight.w600, color: kInk, fontSize: 12.5)),
+                ),
+              ]),
+            );
+          }).toList(),
+        ),
+      ]),
     );
   }
 

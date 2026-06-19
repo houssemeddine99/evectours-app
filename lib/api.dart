@@ -91,6 +91,43 @@ class Api {
     return (user: AppUser.fromJson(data['user']), bookings: bookings);
   }
 
+  // ── Admin ─────────────────────────────────────────────
+
+  static Map<String, String> _auth(String token) => {'Authorization': 'Bearer $token'};
+
+  static Future<AdminStats> adminStats(String token) async {
+    final res = await http
+        .get(Uri.parse('$kApiBase/admin/stats'), headers: _auth(token))
+        .timeout(_timeout);
+    if (res.statusCode != 200) throw ApiException('Could not load stats.');
+    return AdminStats.fromJson(_decode(res.body));
+  }
+
+  static Future<List<AdminReservation>> adminReservations(String token) async {
+    final res = await http
+        .get(Uri.parse('$kApiBase/admin/reservations'), headers: _auth(token))
+        .timeout(_timeout);
+    if (res.statusCode != 200) throw ApiException('Could not load reservations.');
+    final list = (_decode(res.body)['reservations'] as List?) ?? const [];
+    return list
+        .map((e) => AdminReservation.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  static Future<void> adminConfirm(String token, int id) async {
+    final res = await http
+        .post(Uri.parse('$kApiBase/admin/reservations/$id/confirm'), headers: _auth(token))
+        .timeout(_timeout);
+    if (res.statusCode != 200) throw ApiException('Action failed.');
+  }
+
+  static Future<void> adminCancel(String token, int id) async {
+    final res = await http
+        .post(Uri.parse('$kApiBase/admin/reservations/$id/cancel'), headers: _auth(token))
+        .timeout(_timeout);
+    if (res.statusCode != 200) throw ApiException('Action failed.');
+  }
+
   static Map<String, dynamic> _decode(String body) {
     try {
       final j = jsonDecode(body);
