@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'auth_store.dart';
 import 'constants.dart';
 import 'screens/home_screen.dart';
 import 'screens/voyages_screen.dart';
 import 'screens/offers_screen.dart';
 import 'screens/contact_screen.dart';
+import 'screens/account_screen.dart';
 
-void main() => runApp(const EvecToursApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await AuthStore.instance.load();
+  runApp(const EvecToursApp());
+}
 
 class EvecToursApp extends StatelessWidget {
   const EvecToursApp({super.key});
@@ -55,6 +61,7 @@ class _HomeShellState extends State<HomeShell> {
       const VoyagesScreen(),
       const OffersScreen(),
       const ContactScreen(),
+      const AccountScreen(),
     ];
     return Scaffold(
       body: IndexedStack(index: _index, children: pages),
@@ -87,6 +94,10 @@ class _HomeShellState extends State<HomeShell> {
                 icon: Icon(Icons.support_agent_outlined),
                 selectedIcon: Icon(Icons.support_agent, color: kGold),
                 label: 'Contact'),
+            NavigationDestination(
+                icon: Icon(Icons.person_outline),
+                selectedIcon: Icon(Icons.person, color: kGold),
+                label: 'Account'),
           ],
         ),
       ),

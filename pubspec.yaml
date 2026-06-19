@@ -45,6 +45,8 @@ dependencies:
   google_fonts: ^6.2.1
   # Skeleton shimmer while content loads
   shimmer: ^3.0.0
+  # Persist the auth token on the device
+  shared_preferences: ^2.3.2
 
 dev_dependencies:
   flutter_test:

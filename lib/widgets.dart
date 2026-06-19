@@ -200,6 +200,94 @@ class _Chip extends StatelessWidget {
   }
 }
 
+/// ── Auth form building blocks ──────────────────────────
+class AuthField extends StatelessWidget {
+  const AuthField({
+    super.key,
+    required this.controller,
+    required this.label,
+    required this.icon,
+    this.obscure = false,
+    this.keyboard,
+  });
+  final TextEditingController controller;
+  final String label;
+  final IconData icon;
+  final bool obscure;
+  final TextInputType? keyboard;
+
+  @override
+  Widget build(BuildContext context) {
+    OutlineInputBorder border(Color c) => OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: c));
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 14),
+      child: TextField(
+        controller: controller,
+        obscureText: obscure,
+        keyboardType: keyboard,
+        decoration: InputDecoration(
+          labelText: label,
+          prefixIcon: Icon(icon, color: kMuted),
+          filled: true,
+          fillColor: kSurface,
+          border: border(kHairline),
+          enabledBorder: border(kHairline),
+          focusedBorder: border(kGold),
+        ),
+      ),
+    );
+  }
+}
+
+class AuthButton extends StatelessWidget {
+  const AuthButton({super.key, required this.label, required this.onPressed, this.loading = false});
+  final String label;
+  final VoidCallback onPressed;
+  final bool loading;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: FilledButton(
+        style: FilledButton.styleFrom(
+            backgroundColor: kGold,
+            foregroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(vertical: 15)),
+        onPressed: loading ? null : onPressed,
+        child: loading
+            ? const SizedBox(
+                height: 20, width: 20,
+                child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+            : Text(label, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
+      ),
+    );
+  }
+}
+
+class AuthError extends StatelessWidget {
+  const AuthError(this.message, {super.key});
+  final String message;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 14),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFDF2F2),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: const Color(0xFFF3C2C2)),
+      ),
+      child: Row(children: [
+        const Icon(Icons.error_outline, color: Color(0xFFB91C1C), size: 18),
+        const SizedBox(width: 8),
+        Expanded(child: Text(message, style: const TextStyle(color: Color(0xFFB91C1C), fontSize: 13))),
+      ]),
+    );
+  }
+}
+
 /// Generic loading / error / retry view used by screens.
 class StateView extends StatelessWidget {
   const StateView({super.key, this.loading = false, this.error, this.onRetry});

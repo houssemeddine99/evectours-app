@@ -106,6 +106,73 @@ class Country {
       );
 }
 
+class AppUser {
+  final int id;
+  final String username;
+  final String email;
+  final String? tel;
+  final String? imageUrl;
+  final bool isAdmin;
+  AppUser({
+    required this.id,
+    required this.username,
+    required this.email,
+    this.tel,
+    this.imageUrl,
+    this.isAdmin = false,
+  });
+  factory AppUser.fromJson(Map<String, dynamic> j) => AppUser(
+        id: j['id'] is int ? j['id'] : int.tryParse('${j['id']}') ?? 0,
+        username: j['username'] ?? '',
+        email: j['email'] ?? '',
+        tel: j['tel'],
+        imageUrl: j['image_url'],
+        isAdmin: j['is_admin'] == true,
+      );
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'username': username,
+        'email': email,
+        'tel': tel,
+        'image_url': imageUrl,
+        'is_admin': isAdmin,
+      };
+}
+
+class Booking {
+  final int? id;
+  final String? reference;
+  final String? voyageTitle;
+  final String? destination;
+  final int? people;
+  final String? totalPrice;
+  final String? status;
+  final String? paymentStatus;
+  final String? date;
+  Booking({
+    this.id,
+    this.reference,
+    this.voyageTitle,
+    this.destination,
+    this.people,
+    this.totalPrice,
+    this.status,
+    this.paymentStatus,
+    this.date,
+  });
+  factory Booking.fromJson(Map<String, dynamic> j) => Booking(
+        id: j['id'] is int ? j['id'] : int.tryParse('${j['id'] ?? ''}'),
+        reference: j['reference'],
+        voyageTitle: j['voyage_title'],
+        destination: j['destination'],
+        people: j['people'] is int ? j['people'] : int.tryParse('${j['people'] ?? ''}'),
+        totalPrice: j['total_price']?.toString(),
+        status: j['status'],
+        paymentStatus: j['payment_status'],
+        date: j['date'],
+      );
+}
+
 class Offer {
   final String title;
   final String description;
