@@ -73,7 +73,8 @@ class _OffersScreenState extends State<OffersScreen> {
       decoration: BoxDecoration(
         color: kSurface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0x73B8862E)),
+        border: Border.all(color: kLine),
+        boxShadow: const [BoxShadow(color: Color(0x10000000), blurRadius: 14, offset: Offset(0, 6))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,7 +84,7 @@ class _OffersScreenState extends State<OffersScreen> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 decoration: BoxDecoration(
-                    color: kGold, borderRadius: BorderRadius.circular(20)),
+                    color: kCoral, borderRadius: BorderRadius.circular(20)),
                 child: Text('-${o.discountPercentage}%',
                     style: const TextStyle(
                         color: Colors.white, fontWeight: FontWeight.w800, fontSize: 13)),

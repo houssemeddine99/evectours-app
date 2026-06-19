@@ -25,16 +25,40 @@ class EvecToursApp extends StatelessWidget {
       title: 'Evec Tours',
       debugShowCheckedModeBanner: false,
       theme: base.copyWith(
-        scaffoldBackgroundColor: kIvory,
+        scaffoldBackgroundColor: kBg,
         textTheme: GoogleFonts.interTextTheme(base.textTheme)
             .apply(bodyColor: kInk, displayColor: kInk),
         appBarTheme: AppBarTheme(
-          backgroundColor: kIvory,
+          backgroundColor: kBg,
           foregroundColor: kInk,
           elevation: 0,
-          centerTitle: true,
+          scrolledUnderElevation: 0,
+          centerTitle: false,
           titleTextStyle:
-              GoogleFonts.poppins(color: kInk, fontSize: 18, fontWeight: FontWeight.w800),
+              GoogleFonts.poppins(color: kInk, fontSize: 20, fontWeight: FontWeight.w800),
+        ),
+        filledButtonTheme: FilledButtonThemeData(
+          style: FilledButton.styleFrom(
+            backgroundColor: kTeal,
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 22),
+            textStyle: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w700),
+          ),
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: kSurface,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16),
+              borderSide: const BorderSide(color: kLine)),
+          enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16),
+              borderSide: const BorderSide(color: kLine)),
+          focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16),
+              borderSide: const BorderSide(color: kTeal, width: 1.6)),
         ),
       ),
       home: const HomeShell(),

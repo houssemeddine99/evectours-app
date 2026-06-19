@@ -200,7 +200,7 @@ class _LoggedInState extends State<_LoggedIn> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
             decoration: BoxDecoration(
-              color: paid ? const Color(0x1416A34A) : const Color(0x14B8862E),
+              color: paid ? const Color(0x1416A34A) : const Color(0x140D9488),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(b.paymentStatus ?? (b.status ?? '—'),

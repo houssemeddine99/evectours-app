@@ -29,9 +29,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _load() async {
     try {
       final v = await Api.voyages();
-      if (mounted) setState(() => _featured = v.take(6).toList());
+      if (mounted) setState(() => _featured = v.take(8).toList());
     } catch (_) {
-      // Home stays usable even if featured fails to load.
+      // home stays usable even if featured fails
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -43,145 +43,142 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
         bottom: false,
         child: ListView(
-          padding: EdgeInsets.zero,
+          padding: const EdgeInsets.only(bottom: 26),
           children: [
-            _hero(),
-            _quickActions(),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 8, 20, 4),
-              child: Text('Featured voyages',
-                  style: poppins(size: 18, weight: FontWeight.w800)),
-            ),
-            _featuredList(),
+            _header(),
+            _searchBar(),
+            const SizedBox(height: 18),
+            _promoBanner(),
             const SizedBox(height: 24),
+            _sectionHeader('Featured voyages', () => widget.onTab(1)),
+            _featuredList(),
           ],
         ),
       ),
     );
   }
 
-  Widget _hero() {
-    return SizedBox(
-      height: 360,
-      child: Stack(
-        fit: StackFit.expand,
+  Widget _header() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 18, 20, 0),
+      child: Row(
         children: [
-          const NetImage(
-              'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80'),
-          DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.black.withValues(alpha: .12),
-                  Colors.black.withValues(alpha: .64),
-                ],
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(22, 0, 22, 26),
+          Expanded(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('✈  YOUR TRUSTED TRAVEL PARTNER',
-                    style: TextStyle(
-                        color: kGoldSoft,
-                        fontSize: 11,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1.4)),
-                const SizedBox(height: 10),
-                RichText(
-                  text: TextSpan(
-                    style: poppins(size: 32, weight: FontWeight.w800, color: Colors.white, height: 1.12),
-                    children: [
-                      const TextSpan(text: 'Discover '),
-                      TextSpan(
-                          text: 'Unforgettable',
-                          style: poppins(size: 32, weight: FontWeight.w800, color: kGoldSoft, height: 1.12)),
-                      const TextSpan(text: '\nJourneys'),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Text('Curated voyages, exclusive offers, and a team that replies fast.',
-                    style: TextStyle(color: Colors.white.withValues(alpha: .92), fontSize: 14, height: 1.5)),
-                const SizedBox(height: 18),
-                FilledButton(
-                  style: FilledButton.styleFrom(
-                      backgroundColor: kGold,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 13)),
-                  onPressed: () => widget.onTab(1),
-                  child: const Text('Explore voyages', style: TextStyle(fontWeight: FontWeight.w700)),
-                ),
+                const Text('Hi there 👋', style: TextStyle(color: kMuted, fontSize: 14)),
+                const SizedBox(height: 2),
+                Text('Where to next?', style: poppins(size: 26, weight: FontWeight.w800)),
               ],
             ),
+          ),
+          Container(
+            width: 46,
+            height: 46,
+            decoration: BoxDecoration(color: kTeal.withValues(alpha: .12), shape: BoxShape.circle),
+            child: const Icon(Icons.travel_explore, color: kTeal),
           ),
         ],
       ),
     );
   }
 
-  Widget _quickActions() {
-    final items = [
-      [Icons.luggage, 'Voyages', 1],
-      [Icons.local_offer, 'Offers', 2],
-      [Icons.support_agent, 'Contact', 3],
-    ];
+  Widget _searchBar() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 18, 20, 6),
-      child: Row(
-        children: items.map((it) {
-          return Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5),
-              child: InkWell(
-                borderRadius: BorderRadius.circular(14),
-                onTap: () => widget.onTab(it[2] as int),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  decoration: BoxDecoration(
-                    color: kSurface,
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: kHairline),
+      padding: const EdgeInsets.fromLTRB(20, 18, 20, 0),
+      child: GestureDetector(
+        onTap: () => widget.onTab(1),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
+          decoration: BoxDecoration(
+            color: kSurface,
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(color: kLine),
+            boxShadow: const [BoxShadow(color: Color(0x0F000000), blurRadius: 14, offset: Offset(0, 6))],
+          ),
+          child: const Row(children: [
+            Icon(Icons.search, color: kTeal),
+            SizedBox(width: 10),
+            Text('Search destinations…', style: TextStyle(color: kMuted, fontSize: 15)),
+          ]),
+        ),
+      ),
+    );
+  }
+
+  Widget _promoBanner() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Container(
+        padding: const EdgeInsets.all(18),
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+              colors: [kTeal, kTealDark], begin: Alignment.topLeft, end: Alignment.bottomRight),
+          borderRadius: BorderRadius.circular(22),
+          boxShadow: const [BoxShadow(color: Color(0x330D9488), blurRadius: 18, offset: Offset(0, 10))],
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Plan with our experts',
+                      style: poppins(size: 17, weight: FontWeight.w800, color: Colors.white)),
+                  const SizedBox(height: 4),
+                  Text('Tell us your dream trip — we reply fast.',
+                      style: TextStyle(color: Colors.white.withValues(alpha: .92), fontSize: 13, height: 1.4)),
+                  const SizedBox(height: 14),
+                  FilledButton(
+                    style: FilledButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: kTealDark,
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10)),
+                    onPressed: () =>
+                        whatsappAgency('Hello Evec Tours, I would like help planning a trip.'),
+                    child: const Text('Chat on WhatsApp'),
                   ),
-                  child: Column(children: [
-                    Icon(it[0] as IconData, color: kGold, size: 24),
-                    const SizedBox(height: 8),
-                    Text(it[1] as String,
-                        style: const TextStyle(
-                            color: kInk, fontSize: 12.5, fontWeight: FontWeight.w600)),
-                  ]),
-                ),
+                ],
               ),
             ),
-          );
-        }).toList(),
+            const Icon(Icons.travel_explore, color: Colors.white24, size: 70),
+          ],
+        ),
       ),
+    );
+  }
+
+  Widget _sectionHeader(String title, VoidCallback onSeeAll) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 0, 10, 0),
+      child: Row(children: [
+        Text(title, style: poppins(size: 18, weight: FontWeight.w800)),
+        const Spacer(),
+        TextButton(
+          onPressed: onSeeAll,
+          child: const Text('See all',
+              style: TextStyle(color: kTealDark, fontWeight: FontWeight.w700)),
+        ),
+      ]),
     );
   }
 
   Widget _featuredList() {
     if (_loading) {
-      return const SizedBox(
-        height: 230,
-        child: Center(child: CircularProgressIndicator(color: kGold)),
-      );
+      return const SizedBox(height: 264, child: Center(child: CircularProgressIndicator(color: kTeal)));
     }
     if (_featured.isEmpty) {
       return const Padding(
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.fromLTRB(20, 8, 20, 0),
         child: Text('No voyages yet — check back soon.', style: TextStyle(color: kMuted)),
       );
     }
     return SizedBox(
-      height: 250,
+      height: 270,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.fromLTRB(20, 8, 12, 8),
+        padding: const EdgeInsets.fromLTRB(20, 6, 12, 8),
         itemCount: _featured.length,
         itemBuilder: (_, i) {
           final v = _featured[i];
@@ -190,30 +187,51 @@ class _HomeScreenState extends State<HomeScreen> {
               builder: (_) => VoyageDetailScreen(slug: v.slug, title: v.title),
             )),
             child: Container(
-              width: 230,
-              margin: const EdgeInsets.only(right: 12),
+              width: 240,
+              margin: const EdgeInsets.only(right: 14),
               decoration: BoxDecoration(
                 color: kSurface,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: kHairline),
+                borderRadius: BorderRadius.circular(22),
+                boxShadow: const [BoxShadow(color: Color(0x12000000), blurRadius: 16, offset: Offset(0, 8))],
               ),
               clipBehavior: Clip.antiAlias,
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                AspectRatio(aspectRatio: 16 / 10, child: NetImage(v.image)),
+                Stack(children: [
+                  Hero(
+                    tag: 'voyage-${v.slug}',
+                    child: AspectRatio(aspectRatio: 16 / 11, child: NetImage(v.image)),
+                  ),
+                  if (v.durationDays != null)
+                    Positioned(
+                      top: 10, right: 10,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+                        decoration: BoxDecoration(
+                            color: Colors.white, borderRadius: BorderRadius.circular(20)),
+                        child: Text('${v.durationDays} days',
+                            style: poppins(size: 11, weight: FontWeight.w700, color: kTealDark)),
+                      ),
+                    ),
+                ]),
                 Padding(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(14),
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Text(v.destination,
-                        style: const TextStyle(
-                            color: kGold, fontSize: 11, fontWeight: FontWeight.w600),
-                        maxLines: 1, overflow: TextOverflow.ellipsis),
+                    Row(children: [
+                      const Icon(Icons.place, size: 13, color: kTeal),
+                      const SizedBox(width: 3),
+                      Expanded(
+                        child: Text(v.destination,
+                            style: const TextStyle(color: kMuted, fontSize: 11.5),
+                            maxLines: 1, overflow: TextOverflow.ellipsis),
+                      ),
+                    ]),
                     const SizedBox(height: 4),
                     Text(v.title,
-                        style: poppins(size: 14, weight: FontWeight.w700),
+                        style: poppins(size: 14.5, weight: FontWeight.w700, height: 1.15),
                         maxLines: 2, overflow: TextOverflow.ellipsis),
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 8),
                     Text(formatPrice(v.price),
-                        style: poppins(size: 14, weight: FontWeight.w800, color: kGoldDark)),
+                        style: poppins(size: 15, weight: FontWeight.w800, color: kTealDark)),
                   ]),
                 ),
               ]),

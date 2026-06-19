@@ -75,10 +75,10 @@ flutter_launcher_icons:
 
 # Native splash (run: dart run flutter_native_splash:create)
 flutter_native_splash:
-  color: "#fbf8f3"
+  color: "#ffffff"
   image: assets/icon/icon.png
   android_12:
-    color: "#fbf8f3"
+    color: "#ffffff"
     image: assets/icon/icon.png
 
 # For information on the generic Dart part of this file, see the
