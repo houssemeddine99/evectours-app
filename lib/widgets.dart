@@ -1,8 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'constants.dart';
 import 'models.dart';
+
+/// Poppins helper for headings (matches the website's display font).
+TextStyle poppins({
+  double? size,
+  FontWeight weight = FontWeight.w700,
+  Color color = kInk,
+  double? height,
+  double spacing = 0,
+}) =>
+    GoogleFonts.poppins(
+      fontSize: size,
+      fontWeight: weight,
+      color: color,
+      height: height,
+      letterSpacing: spacing,
+    );
 
 /// "5200" / "5200.00" -> "5,200 TND" ; null/empty -> "Contact us".
 String formatPrice(String? price) {
@@ -79,67 +96,59 @@ class VoyageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 16),
-      clipBehavior: Clip.antiAlias,
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-        side: const BorderSide(color: kHairline),
+    return Container(
+      margin: const EdgeInsets.only(bottom: 18),
+      decoration: BoxDecoration(
+        color: kSurface,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: kHairline),
+        boxShadow: const [
+          BoxShadow(color: Color(0x14000000), blurRadius: 18, offset: Offset(0, 8)),
+        ],
       ),
-      color: kSurface,
+      clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: onTap,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            AspectRatio(aspectRatio: 16 / 9, child: NetImage(voyage.image)),
+            Stack(
+              children: [
+                Hero(
+                  tag: 'voyage-${voyage.slug}',
+                  child: AspectRatio(aspectRatio: 16 / 9, child: NetImage(voyage.image)),
+                ),
+                Positioned.fill(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [Colors.transparent, Colors.black.withValues(alpha: .42)],
+                        stops: const [0.5, 1],
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(left: 12, bottom: 12, child: _pill(Icons.place, voyage.destination)),
+              ],
+            ),
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      const Icon(Icons.place_outlined, size: 15, color: kGold),
-                      const SizedBox(width: 4),
-                      Expanded(
-                        child: Text(
-                          voyage.destination,
-                          style: const TextStyle(
-                              color: kGold,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: .3),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    voyage.title,
-                    style: const TextStyle(
-                        color: kInk, fontSize: 17, fontWeight: FontWeight.w700),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Text(
-                        formatPrice(voyage.price),
-                        style: const TextStyle(
-                            color: kGoldDark,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w800),
-                      ),
-                      const Spacer(),
-                      if (voyage.durationDays != null)
-                        _Chip(icon: Icons.schedule, label: '${voyage.durationDays} days'),
-                    ],
-                  ),
+                  Text(voyage.title,
+                      style: poppins(size: 17, weight: FontWeight.w700, height: 1.15),
+                      maxLines: 2, overflow: TextOverflow.ellipsis),
+                  const SizedBox(height: 12),
+                  Row(children: [
+                    Text(formatPrice(voyage.price),
+                        style: poppins(size: 16, weight: FontWeight.w800, color: kGoldDark)),
+                    const Spacer(),
+                    if (voyage.durationDays != null)
+                      _Chip(icon: Icons.schedule, label: '${voyage.durationDays} days'),
+                  ]),
                 ],
               ),
             ),
@@ -148,6 +157,25 @@ class VoyageCard extends StatelessWidget {
       ),
     );
   }
+
+  Widget _pill(IconData icon, String text) => Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        decoration: BoxDecoration(
+          color: Colors.black.withValues(alpha: .45),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Row(mainAxisSize: MainAxisSize.min, children: [
+          Icon(icon, size: 13, color: Colors.white),
+          const SizedBox(width: 4),
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 210),
+            child: Text(text,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w600)),
+          ),
+        ]),
+      );
 }
 
 class _Chip extends StatelessWidget {

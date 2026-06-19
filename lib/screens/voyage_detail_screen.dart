@@ -50,63 +50,83 @@ class _VoyageDetailScreenState extends State<VoyageDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (_loading || _error != null) {
+      return Scaffold(
+        appBar: AppBar(title: Text(widget.title ?? 'Voyage')),
+        body: StateView(loading: _loading, error: _error, onRetry: _load),
+      );
+    }
+    final v = _v!;
     return Scaffold(
-      appBar: AppBar(title: Text(widget.title ?? 'Voyage')),
-      bottomNavigationBar: _v == null ? null : _bookingBar(),
-      body: _loading || _error != null
-          ? StateView(loading: _loading, error: _error, onRetry: _load)
-          : _content(_v!),
+      bottomNavigationBar: _bookingBar(),
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 300,
+            pinned: true,
+            stretch: true,
+            backgroundColor: kInk,
+            foregroundColor: Colors.white,
+            flexibleSpace: FlexibleSpaceBar(
+              stretchModes: const [StretchMode.zoomBackground],
+              background: Stack(
+                fit: StackFit.expand,
+                children: [
+                  Hero(tag: 'voyage-${v.slug}', child: NetImage(v.image)),
+                  const DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [Colors.transparent, Color(0x73000000)],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(child: _body(v)),
+        ],
+      ),
     );
   }
 
-  Widget _content(Voyage v) {
-    return ListView(
-      padding: EdgeInsets.zero,
-      children: [
-        AspectRatio(aspectRatio: 16 / 10, child: NetImage(v.image)),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(20, 18, 20, 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(children: [
-                const Icon(Icons.place_outlined, size: 16, color: kGold),
-                const SizedBox(width: 5),
-                Expanded(
-                  child: Text(v.destination.toUpperCase(),
-                      style: const TextStyle(
-                          color: kGold,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 12.5,
-                          letterSpacing: .6)),
-                ),
-              ]),
-              const SizedBox(height: 8),
-              Text(v.title,
+  Widget _body(Voyage v) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 18, 20, 28),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(children: [
+            const Icon(Icons.place_outlined, size: 16, color: kGold),
+            const SizedBox(width: 5),
+            Expanded(
+              child: Text(v.destination.toUpperCase(),
                   style: const TextStyle(
-                      color: kInk, fontSize: 24, fontWeight: FontWeight.w800, height: 1.15)),
-              const SizedBox(height: 18),
-              _infoRow(v),
-              if (v.country != null) ...[
-                const SizedBox(height: 18),
-                _countryCard(v.country!),
-              ],
-              if (v.carbon?.co2PerPerson != null) ...[
-                const SizedBox(height: 14),
-                _carbonRow(v.carbon!),
-              ],
-              if (v.description.isNotEmpty) ...[
-                const SizedBox(height: 22),
-                const Text('About this journey',
-                    style: TextStyle(color: kInk, fontSize: 16, fontWeight: FontWeight.w700)),
-                const SizedBox(height: 8),
-                Text(v.description,
-                    style: const TextStyle(color: kMuted, height: 1.6, fontSize: 14.5)),
-              ],
-            ],
-          ),
-        ),
-      ],
+                      color: kGold, fontWeight: FontWeight.w700, fontSize: 12.5, letterSpacing: .6)),
+            ),
+          ]),
+          const SizedBox(height: 8),
+          Text(v.title, style: poppins(size: 24, weight: FontWeight.w800, height: 1.15)),
+          const SizedBox(height: 18),
+          _infoRow(v),
+          if (v.country != null) ...[
+            const SizedBox(height: 18),
+            _countryCard(v.country!),
+          ],
+          if (v.carbon?.co2PerPerson != null) ...[
+            const SizedBox(height: 14),
+            _carbonRow(v.carbon!),
+          ],
+          if (v.description.isNotEmpty) ...[
+            const SizedBox(height: 22),
+            Text('About this journey', style: poppins(size: 16, weight: FontWeight.w700)),
+            const SizedBox(height: 8),
+            Text(v.description, style: const TextStyle(color: kMuted, height: 1.6, fontSize: 14.5)),
+          ],
+        ],
+      ),
     );
   }
 

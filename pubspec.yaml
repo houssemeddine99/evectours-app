@@ -41,6 +41,10 @@ dependencies:
   url_launcher: ^6.3.1
   # Embedded browser (used later for the Flouci payment page)
   webview_flutter: ^4.10.0
+  # Brand typography (Poppins headings + Inter body), matching the website
+  google_fonts: ^6.2.1
+  # Skeleton shimmer while content loads
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -55,6 +59,8 @@ dev_dependencies:
 
   # Generates Android launcher icons from the Evec Tours logo
   flutter_launcher_icons: ^0.14.4
+  # Native splash screen (logo on ivory)
+  flutter_native_splash: ^2.4.6
 
 # App launcher icon config (run: dart run flutter_launcher_icons)
 flutter_launcher_icons:
@@ -64,6 +70,14 @@ flutter_launcher_icons:
   min_sdk_android: 21
   adaptive_icon_background: "#ffffff"
   adaptive_icon_foreground: "assets/icon/icon-foreground.png"
+
+# Native splash (run: dart run flutter_native_splash:create)
+flutter_native_splash:
+  color: "#fbf8f3"
+  image: assets/icon/icon.png
+  android_12:
+    color: "#fbf8f3"
+    image: assets/icon/icon.png
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

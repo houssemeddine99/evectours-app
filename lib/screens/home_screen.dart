@@ -47,10 +47,10 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             _hero(),
             _quickActions(),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(20, 8, 20, 4),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 8, 20, 4),
               child: Text('Featured voyages',
-                  style: TextStyle(color: kInk, fontSize: 18, fontWeight: FontWeight.w800)),
+                  style: poppins(size: 18, weight: FontWeight.w800)),
             ),
             _featuredList(),
             const SizedBox(height: 24),
@@ -61,51 +61,64 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _hero() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(22, 28, 22, 28),
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color(0xFFFDFBF7), Color(0xFFF4EEE2)],
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return SizedBox(
+      height: 360,
+      child: Stack(
+        fit: StackFit.expand,
         children: [
-          Row(children: [
-            const Text('✈', style: TextStyle(fontSize: 16)),
-            const SizedBox(width: 6),
-            Text('YOUR TRUSTED TRAVEL PARTNER',
-                style: TextStyle(
-                    color: kGoldDark,
-                    fontSize: 11,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1.5)),
-          ]),
-          const SizedBox(height: 14),
-          RichText(
-            text: const TextSpan(
-              style: TextStyle(color: kInk, fontSize: 30, fontWeight: FontWeight.w800, height: 1.15),
-              children: [
-                TextSpan(text: 'Discover '),
-                TextSpan(text: 'Unforgettable', style: TextStyle(color: kGold)),
-                TextSpan(text: '\nJourneys'),
-              ],
+          const NetImage(
+              'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80'),
+          DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.black.withValues(alpha: .12),
+                  Colors.black.withValues(alpha: .64),
+                ],
+              ),
             ),
           ),
-          const SizedBox(height: 12),
-          const Text('Curated voyages, exclusive offers, and a team that replies fast.',
-              style: TextStyle(color: kInk, fontSize: 14.5, height: 1.5)),
-          const SizedBox(height: 18),
-          FilledButton(
-            style: FilledButton.styleFrom(
-                backgroundColor: kGold,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 13)),
-            onPressed: () => widget.onTab(1),
-            child: const Text('Explore voyages', style: TextStyle(fontWeight: FontWeight.w700)),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(22, 0, 22, 26),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('✈  YOUR TRUSTED TRAVEL PARTNER',
+                    style: TextStyle(
+                        color: kGoldSoft,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 1.4)),
+                const SizedBox(height: 10),
+                RichText(
+                  text: TextSpan(
+                    style: poppins(size: 32, weight: FontWeight.w800, color: Colors.white, height: 1.12),
+                    children: [
+                      const TextSpan(text: 'Discover '),
+                      TextSpan(
+                          text: 'Unforgettable',
+                          style: poppins(size: 32, weight: FontWeight.w800, color: kGoldSoft, height: 1.12)),
+                      const TextSpan(text: '\nJourneys'),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Text('Curated voyages, exclusive offers, and a team that replies fast.',
+                    style: TextStyle(color: Colors.white.withValues(alpha: .92), fontSize: 14, height: 1.5)),
+                const SizedBox(height: 18),
+                FilledButton(
+                  style: FilledButton.styleFrom(
+                      backgroundColor: kGold,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 13)),
+                  onPressed: () => widget.onTab(1),
+                  child: const Text('Explore voyages', style: TextStyle(fontWeight: FontWeight.w700)),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -196,13 +209,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         maxLines: 1, overflow: TextOverflow.ellipsis),
                     const SizedBox(height: 4),
                     Text(v.title,
-                        style: const TextStyle(
-                            color: kInk, fontSize: 14, fontWeight: FontWeight.w700),
+                        style: poppins(size: 14, weight: FontWeight.w700),
                         maxLines: 2, overflow: TextOverflow.ellipsis),
                     const SizedBox(height: 6),
                     Text(formatPrice(v.price),
-                        style: const TextStyle(
-                            color: kGoldDark, fontSize: 14, fontWeight: FontWeight.w800)),
+                        style: poppins(size: 14, weight: FontWeight.w800, color: kGoldDark)),
                   ]),
                 ),
               ]),

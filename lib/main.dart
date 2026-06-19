@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'constants.dart';
 import 'screens/home_screen.dart';
@@ -19,13 +20,15 @@ class EvecToursApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: base.copyWith(
         scaffoldBackgroundColor: kIvory,
-        appBarTheme: const AppBarTheme(
+        textTheme: GoogleFonts.interTextTheme(base.textTheme)
+            .apply(bodyColor: kInk, displayColor: kInk),
+        appBarTheme: AppBarTheme(
           backgroundColor: kIvory,
           foregroundColor: kInk,
           elevation: 0,
           centerTitle: true,
-          titleTextStyle: TextStyle(
-              color: kInk, fontSize: 18, fontWeight: FontWeight.w800),
+          titleTextStyle:
+              GoogleFonts.poppins(color: kInk, fontSize: 18, fontWeight: FontWeight.w800),
         ),
       ),
       home: const HomeShell(),
